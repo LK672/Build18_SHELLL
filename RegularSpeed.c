@@ -1,16 +1,13 @@
 #include <AccelStepper.h>
-#include <ezButton.h>
 
 #define VRX_PIN  A1 // Arduino pin connected to VRX pin
 #define VRY_PIN  A0 // Arduino pin connected to VRY pin
-#define SW_PIN 2 //Arduino pin for button
 
 /**
 On the DM542T stepper motor driver max amprage setting of peak 3.97A and 200 
 pulses per revolution, this is the max speed we can set. Any higher speed will
 show little to no differnece in motor speed. */ 
 #define SPEED 3600
-#define OFFSET 512
 
 #define LEFT_THRESHOLD  400
 #define RIGHT_THRESHOLD 800
@@ -25,27 +22,18 @@ show little to no differnece in motor speed. */
 
 int xValue = 0 ; // To store value of the X axis
 int yValue = 0 ; // To store value of the Y axis
-int bValue = 0 ; //To store button
-int proportional_speed = 0;
-
 int command = COMMAND_NO;
 
 AccelStepper stepper1(AccelStepper::DRIVER, 9, 8);
-ezButton button(SW_PIN);
 
 void setup() {
   // this sets the 9600 standard baud rate for serial communication
   Serial.begin(9600);
   stepper1.setMaxSpeed(SPEED);
-  button.setDebounceTime(50);
-  //stepper1.setSpeed(SPEED);
+  stepper1.setSpeed(SPEED);
 }
 
 void loop() {
-
-  button.loop();
-  bValue = button.getState();
-
   // read analog X and Y analog values
   xValue = analogRead(VRX_PIN);
   yValue = analogRead(VRY_PIN);
@@ -69,11 +57,19 @@ void loop() {
   // Note: at a time, there may be no command, one command, or two commands
 
   // print command to serial and process command
-  proportional_speed = ((xValue - OFFSET)/OFFSET) * SPEED
-
-  if (command & (COMMAND_LEFT | COMMAND_RIGHT))
-  {
-    stepper1.setSpeed(proportional_speed);
+  if (command & COMMAND_LEFT) {
+    stepper1.setSpeed(SPEED);
     stepper1.runSpeed();
   }
+
+  if (command & COMMAND_RIGHT) {
+    stepper1.setSpeed(-SPEED);
+    stepper1.runSpeed();
+  }
+
+  // if (command & COMMAND_UP) {
+  // }
+
+  // if (command & COMMAND_DOWN) {
+  // }
 }
