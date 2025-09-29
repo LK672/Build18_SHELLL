@@ -1,3 +1,19 @@
+/*
+Arduino pins
+Driver connections
+D9 -> Driver PULL+
+D8 -> Driver DIR+
+GND -> Driver PULL-
+GND -> Driver DIR-
+
+Joystick
+GND -> GND
+5V -> 5V
+VRX -> A1 (Defined below)
+VRY -> A0 (Defined below)
+SW connected to nothing (I think this is clicking of the joystick)
+*/
+
 #include <AccelStepper.h>
 
 #define VRX_PIN  A1 // Arduino pin connected to VRX pin
