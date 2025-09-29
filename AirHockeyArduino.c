@@ -23,7 +23,9 @@ SW connected to nothing (I think this is clicking of the joystick)
 On the DM542T stepper motor driver max amprage setting of peak 3.97A and 200 
 pulses per revolution, this is the max speed we can set. Any higher speed will
 show little to no differnece in motor speed. */ 
-#define SPEED 3600
+// If the motor is stalling out, you need to decrease speed
+// Max without ever stalling out for me is 3400
+#define SPEED 3400
 
 #define LEFT_THRESHOLD  400
 #define RIGHT_THRESHOLD 800
